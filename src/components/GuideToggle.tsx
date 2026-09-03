@@ -7,7 +7,9 @@ type Props = {
 export function GuideToggle({ checked, onChange, label }: Props) {
   return (
     <label className="guide-toggle">
-      <span className="guide-toggle-label">{label}</span>
+      <span className={`guide-toggle-label ${checked ? "is-on" : ""}`}>
+        {label}
+      </span>
       <button
         type="button"
         role="switch"

@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from "react-router-dom";
+import { MenuIcon } from "../components/Icons";
 import { PhotoFrame } from "../components/PhotoFrame";
 import { getGenre, getPhotosByGenre } from "../data/catalog";
 
@@ -13,7 +14,7 @@ export function PhotoListPage() {
     <main className="page page-list">
       <header className="list-header">
         <Link to="/" className="icon-btn" aria-label="ジャンル選択へ戻る">
-          <BackIcon />
+          <MenuIcon />
         </Link>
         <div className="list-title">
           <h1>{genre.name}</h1>
@@ -23,32 +24,21 @@ export function PhotoListPage() {
       </header>
 
       <section className="photo-grid" aria-label={`${genre.name}の写真一覧`}>
-        {list.map((photo) => (
-          <Link
-            key={photo.id}
-            to={`/g/${genre.id}/p/${photo.id}`}
-            className="photo-tile"
-            aria-label={`${photo.order.toString().padStart(2, "0")} ${photo.title}`}
-          >
-            <PhotoFrame photo={photo} className="photo-square" />
-          </Link>
-        ))}
+        {list.map((photo) => {
+          const num = photo.order.toString().padStart(2, "0");
+          return (
+            <Link
+              key={photo.id}
+              to={`/g/${genre.id}/p/${photo.id}`}
+              className="photo-tile"
+              aria-label={`${num} ${photo.title}`}
+            >
+              <PhotoFrame photo={photo} className="photo-square" />
+              <span className="photo-num">{num}</span>
+            </Link>
+          );
+        })}
       </section>
     </main>
-  );
-}
-
-function BackIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M15.5 5.5 8 12l7.5 6.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

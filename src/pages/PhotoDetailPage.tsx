@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { CompositionGuide } from "../components/CompositionGuide";
 import { GuideToggle } from "../components/GuideToggle";
+import { AngleIcon, BackIcon, GridIcon, StarIcon, SunIcon } from "../components/Icons";
 import { PhotoFrame } from "../components/PhotoFrame";
+import { PhotoPager } from "../components/PhotoPager";
 import { getAdjacentPhotos, getGenre } from "../data/catalog";
 import { useSwipeNav } from "../hooks/useSwipeNav";
 
@@ -39,11 +41,7 @@ export function PhotoDetailPage() {
   return (
     <main className="page page-detail">
       <header className="detail-header">
-        <Link
-          to={`/g/${genre.id}`}
-          className="icon-btn"
-          aria-label="一覧へ戻る"
-        >
+        <Link to={`/g/${genre.id}`} className="icon-btn" aria-label="一覧へ戻る">
           <BackIcon />
         </Link>
         <GuideToggle
@@ -53,10 +51,7 @@ export function PhotoDetailPage() {
         />
       </header>
 
-      <section
-        className="detail-stage"
-        {...swipe}
-      >
+      <section className="detail-stage" {...swipe}>
         <div className="detail-photo">
           <PhotoFrame photo={photo} className="photo-landscape" />
           {guideOn && (
@@ -68,36 +63,45 @@ export function PhotoDetailPage() {
         </div>
       </section>
 
+      <PhotoPager
+        current={photo.order}
+        total={list.length}
+        onPrev={goPrev}
+        onNext={goNext}
+        canPrev={Boolean(prev)}
+        canNext={Boolean(next)}
+      />
+
       <section className="detail-info" aria-label="撮影のヒント">
-        <InfoBlock label="構図" value={photo.composition} />
-        <InfoBlock label="光" value={photo.light} />
-        <InfoBlock label="角度" value={photo.angle} />
-        <InfoBlock label="撮影ポイント" value={photo.shootingPoint} />
+        <InfoCard icon={<GridIcon />} label="構図" value={photo.composition} />
+        <InfoCard icon={<SunIcon />} label="光" value={photo.light} />
+        <InfoCard icon={<AngleIcon />} label="角度" value={photo.angle} />
+        <InfoCard
+          icon={<StarIcon />}
+          label="撮影ポイント"
+          value={photo.shootingPoint}
+        />
       </section>
     </main>
   );
 }
 
-function InfoBlock({ label, value }: { label: string; value: string }) {
+function InfoCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
   return (
-    <div className="info-block">
-      <h2>{label}</h2>
-      <p>{value}</p>
-    </div>
-  );
-}
-
-function BackIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M15.5 5.5 8 12l7.5 6.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <article className="info-card">
+      <div className="info-card-icon">{icon}</div>
+      <div>
+        <h2>{label}</h2>
+        <p>{value}</p>
+      </div>
+    </article>
   );
 }
