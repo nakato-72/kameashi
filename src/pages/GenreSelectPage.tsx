@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { ChevronIcon } from "../components/Icons";
 import { PhotoFrame } from "../components/PhotoFrame";
-import { genres, getPhoto } from "../data/catalog";
+import { useCatalog } from "../content/CatalogContext";
 
 export function GenreSelectPage() {
+  const { catalog, getPhoto } = useCatalog();
+
   return (
     <main className="page page-home">
       <header className="home-header">
@@ -12,7 +14,7 @@ export function GenreSelectPage() {
       </header>
 
       <section className="genre-list" aria-label="ジャンル">
-        {genres.map((genre) => {
+        {catalog.genres.map((genre) => {
           const cover = getPhoto(genre.id, genre.coverPhotoId);
           return (
             <Link key={genre.id} to={`/g/${genre.id}`} className="genre-card">

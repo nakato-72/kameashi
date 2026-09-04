@@ -303,7 +303,8 @@ button {
 .composition-guide line,
 .composition-guide ellipse,
 .composition-guide rect,
-.composition-guide circle {
+.composition-guide circle,
+.composition-guide path {
   fill: none;
   stroke: var(--guide);
   stroke-width: 0.85;

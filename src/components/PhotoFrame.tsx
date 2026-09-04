@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Photo } from "../types";
 import { PhotoScene } from "../illustrations/PhotoScene";
+import { photoSrc } from "../lib/photoSrc";
 
 type Props = {
   photo: Photo;
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export function PhotoFrame({ photo, className }: Props) {
+  const src = photoSrc(photo.image);
   return (
     <div
       className={className}
@@ -18,8 +20,8 @@ export function PhotoFrame({ photo, className }: Props) {
         } as CSSProperties
       }
     >
-      {photo.image ? (
-        <img src={photo.image} alt="" className="photo-asset" />
+      {src ? (
+        <img src={src} alt="" className="photo-asset" />
       ) : (
         <PhotoScene photoId={photo.id} />
       )}

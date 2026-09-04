@@ -4,6 +4,14 @@
 
 撮りたい写真を探し、「どう撮るか」を視覚的に理解できる撮影アシスタントのブラウザ版MVPです。
 
+## 公開
+
+GitHub Pages で公開しています。
+
+https://nakato-72.github.io/kameashi/
+
+メンテナンス手順は `MAINTENANCE.md` を見てください。
+
 ## 開発
 
 ```bash

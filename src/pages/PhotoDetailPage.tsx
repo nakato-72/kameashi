@@ -5,12 +5,13 @@ import { GuideToggle } from "../components/GuideToggle";
 import { AngleIcon, BackIcon, GridIcon, StarIcon, SunIcon } from "../components/Icons";
 import { PhotoFrame } from "../components/PhotoFrame";
 import { PhotoPager } from "../components/PhotoPager";
-import { getAdjacentPhotos, getGenre } from "../data/catalog";
+import { useCatalog } from "../content/CatalogContext";
 import { useSwipeNav } from "../hooks/useSwipeNav";
 
 export function PhotoDetailPage() {
   const { genreId = "", photoId = "" } = useParams();
   const navigate = useNavigate();
+  const { getGenre, getAdjacentPhotos } = useCatalog();
   const genre = getGenre(genreId);
   const { list, index, prev, next } = getAdjacentPhotos(genreId, photoId);
   const photo = index >= 0 ? list[index] : undefined;

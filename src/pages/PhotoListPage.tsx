@@ -1,10 +1,11 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import { MenuIcon } from "../components/Icons";
 import { PhotoFrame } from "../components/PhotoFrame";
-import { getGenre, getPhotosByGenre } from "../data/catalog";
+import { useCatalog } from "../content/CatalogContext";
 
 export function PhotoListPage() {
   const { genreId = "" } = useParams();
+  const { getGenre, getPhotosByGenre } = useCatalog();
   const genre = getGenre(genreId);
   const list = getPhotosByGenre(genreId);
 

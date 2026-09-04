@@ -1,4 +1,10 @@
-export type GuideType = "hinomaru" | "thirds" | "center";
+export type GuideType =
+  | "thirds"
+  | "hinomaru"
+  | "center"
+  | "diagonal"
+  | "radial"
+  | "frame";
 
 export type Genre = {
   id: string;
@@ -17,10 +23,12 @@ export type Photo = {
   angle: string;
   shootingPoint: string;
   guideType: GuideType;
-  /** 実写素材を置く場合のパス。未設定時はイラストを描画する */
   image?: string;
-  /** 構図ガイド上で強調する点（写真座標の %） */
   highlights: { x: number; y: number }[];
-  /** 一覧 1:1 トリミングの焦点（0–100） */
   crop: { x: number; y: number };
+};
+
+export type Catalog = {
+  genres: Genre[];
+  photos: Photo[];
 };
