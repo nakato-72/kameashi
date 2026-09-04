@@ -110,12 +110,12 @@
       "genreId": "newborn",
       "order": 8,
       "title": "小さな手",
-      "composition": "中央構図",
+      "composition": "黄金らせん構図",
       "light": "柔らかい自然光",
       "angle": "真上",
       "shootingPoint": "手を中央に置き、シンプルな背景で小ささを強調する",
-      "guideType": "center",
-      "highlights": [{ "x": 50, "y": 52 }],
+      "guideType": "spiral",
+      "highlights": [{ "x": 72, "y": 70, "r": 6 }],
       "crop": { "x": 50, "y": 52 }
     },
     {
@@ -123,12 +123,15 @@
       "genreId": "newborn",
       "order": 9,
       "title": "小さな足",
-      "composition": "中央構図",
+      "composition": "対角線構図",
       "light": "柔らかい自然光",
       "angle": "真上",
       "shootingPoint": "足の形や質感を主役にして余計な要素を入れない",
-      "guideType": "center",
-      "highlights": [{ "x": 50, "y": 52 }],
+      "guideType": "diagonal",
+      "highlights": [
+        { "x": 30, "y": 30, "r": 6 },
+        { "x": 70, "y": 70, "r": 6 }
+      ],
       "crop": { "x": 50, "y": 52 }
     },
     {
@@ -149,12 +152,12 @@
       "genreId": "newborn",
       "order": 11,
       "title": "バスケット＋赤ちゃん",
-      "composition": "中央構図",
+      "composition": "二分割（シンメトリー）構図",
       "light": "自然光・サイド光",
       "angle": "斜め上",
       "shootingPoint": "バスケットの形を活かし、赤ちゃんを中央に配置する",
-      "guideType": "center",
-      "highlights": [{ "x": 50, "y": 48 }],
+      "guideType": "split",
+      "highlights": [{ "x": 50, "y": 50, "r": 6 }],
       "crop": { "x": 50, "y": 48 }
     },
     {
@@ -236,12 +239,16 @@
       "genreId": "newborn",
       "order": 17,
       "title": "赤ちゃんの手＋親の手",
-      "composition": "中央構図",
+      "composition": "曲線構図",
       "light": "柔らかい自然光",
       "angle": "真上",
       "shootingPoint": "手同士を中央に配置し、親子のつながりを表現する",
-      "guideType": "center",
-      "highlights": [{ "x": 50, "y": 52 }],
+      "guideType": "curve",
+      "highlights": [
+        { "x": 62, "y": 10, "r": 6 },
+        { "x": 22, "y": 50, "r": 6 },
+        { "x": 62, "y": 90, "r": 6 }
+      ],
       "crop": { "x": 50, "y": 52 }
     },
     {

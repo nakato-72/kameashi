@@ -1,16 +1,24 @@
 export type GuideType =
   | "thirds"
   | "hinomaru"
-  | "center"
   | "diagonal"
   | "radial"
-  | "frame";
+  | "frame"
+  | "spiral"
+  | "split"
+  | "curve";
 
 export type Genre = {
   id: string;
   name: string;
   nameEn: string;
   coverPhotoId: string;
+};
+
+export type Highlight = {
+  x: number;
+  y: number;
+  r: number;
 };
 
 export type Photo = {
@@ -24,7 +32,7 @@ export type Photo = {
   shootingPoint: string;
   guideType: GuideType;
   image?: string;
-  highlights: { x: number; y: number }[];
+  highlights: Highlight[];
   crop: { x: number; y: number };
 };
 

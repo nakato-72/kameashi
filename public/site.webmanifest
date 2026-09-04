@@ -1,0 +1,26 @@
+{
+  "name": "カメアシ",
+  "short_name": "カメアシ",
+  "description": "撮りたい写真を探し、どう撮るかを視覚的に理解できる撮影アシスタント",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F6F3EE",
+  "theme_color": "#F6F3EE",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,13 +1,11 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { compressImage } from "../../admin/compressImage";
-import { getGithubToken, saveCatalogFile, savePhotoFile } from "../../admin/githubStore";
-import { CompositionGuide } from "../../components/CompositionGuide";
-import { PhotoFrame } from "../../components/PhotoFrame";
 import { useCatalog } from "../../content/CatalogContext";
 import { nextPhotoId } from "../../data/catalog";
-import { COMPOSITION_PATTERNS, getPattern } from "../../data/patterns";
-import type { GuideType, Photo } from "../../types";
+import { COMPOSITION_PATTERNS, getPattern, normalizeHighlight } from "../../data/patterns";
+import type { GuideType, Highlight, Photo } from "../../types";
+import { GuideEditor } from "./GuideEditor";
 
 export function ManageEditPage() {
   const { photoId } = useParams();
@@ -24,6 +22,11 @@ export function ManageEditPage() {
   const [angle, setAngle] = useState(existing?.angle ?? "");
   const [shootingPoint, setShootingPoint] = useState(
     existing?.shootingPoint ?? "",
+  );
+  const [highlights, setHighlights] = useState<Highlight[]>(
+    (existing?.highlights ?? getPattern(existing?.guideType ?? "thirds").highlights).map(
+      normalizeHighlight,
+    ),
   );
   const [preview, setPreview] = useState(existing?.image ?? "");
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -44,7 +47,7 @@ export function ManageEditPage() {
       shootingPoint,
       guideType,
       image: preview || existing?.image,
-      highlights: pattern.highlights,
+      highlights,
       crop: existing?.crop ?? { x: 50, y: 50 },
     }),
     [
@@ -53,11 +56,15 @@ export function ManageEditPage() {
       existing,
       guideType,
       light,
-      pattern.highlights,
       pattern.name,
       preview,
       shootingPoint,
       title,
+      highlights,
+      preview,
+      shootingPoint,
+      title,
+      highlights,
     ],
   );
 
@@ -90,18 +97,10 @@ export function ManageEditPage() {
       setError("写真を選んでください");
       return;
     }
-    if (!getGithubToken()) {
-      setError("先に GitHub トークンを保存してください");
-      return;
-    }
 
     setBusy(true);
     try {
       const id = existing?.id ?? nextPhotoId(catalog);
-      let image = existing?.image;
-      if (imageBlob) {
-        image = await savePhotoFile(`${id}.jpg`, imageBlob);
-      }
       const photo: Photo = {
         id,
         genreId: "newborn",
@@ -112,17 +111,16 @@ export function ManageEditPage() {
         angle: angle.trim(),
         shootingPoint: shootingPoint.trim(),
         guideType,
-        image,
-        highlights: pattern.highlights,
+        image: preview || existing?.image,
+        highlights,
         crop: existing?.crop ?? { x: 50, y: 50 },
       };
       const photos = existing
         ? catalog.photos.map((p) => (p.id === existing.id ? photo : p))
         : [...catalog.photos, photo];
       const next = { ...catalog, photos };
-      await saveCatalogFile(JSON.stringify(next, null, 2) + "\n");
       setCatalog(next);
-      setMessage("保存しました。サイトへの反映に1分ほどかかることがあります。");
+      setMessage("保存しました。公開サイトへの反映は、開発用PCで行います。");
       if (isNew) navigate(`/manage/${id}`, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "保存に失敗しました");
@@ -148,15 +146,30 @@ export function ManageEditPage() {
           />
         </label>
 
-        <div className="admin-preview">
-          <div className="detail-photo">
-            <PhotoFrame photo={draftPhoto} className="photo-landscape" />
-            <CompositionGuide
-              type={draftPhoto.guideType}
-              highlights={draftPhoto.highlights}
-            />
-          </div>
-        </div>
+        <label>
+          構図
+          <select
+            value={guideType}
+            onChange={(e) => {
+              const next = e.target.value as GuideType;
+              setGuideType(next);
+              setHighlights(getPattern(next).highlights.map(normalizeHighlight));
+            }}
+          >
+            {COMPOSITION_PATTERNS.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <GuideEditor
+          photo={draftPhoto}
+          guideType={guideType}
+          highlights={highlights}
+          onChange={setHighlights}
+        />
 
         <label>
           タイトル（管理用）
@@ -165,20 +178,6 @@ export function ManageEditPage() {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="例: 余白を活かした寝姿"
           />
-        </label>
-
-        <label>
-          構図
-          <select
-            value={guideType}
-            onChange={(e) => setGuideType(e.target.value as GuideType)}
-          >
-            {COMPOSITION_PATTERNS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
         </label>
 
         <label>
